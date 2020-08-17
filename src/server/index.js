@@ -22,13 +22,14 @@ app.use(bodyParser.json());
 const cors = require('cors');
 app.use(cors());
 
-// Initialize Main Project Folder
+// Initialize Main Project Folder - pointing our app to the folder we want to look at - connect server side code to client side code
 app.use(express.static('dist'))
 
 console.log(__dirname)
 
 app.get('/', function (req, res) {
-    res.sendFile('dist/index.html')
+    res.sendFile('dist/index.html');
+
 })
 
 // designates what port the app will listen to for incoming requests
@@ -36,30 +37,13 @@ app.listen(8081, function () {
     console.log('Example app listening on port 8081!')
 })
 
-
-
+let text 
 
 app.post('/api', function (req, res) {
-    console.log('API has been called');
-    const userText = request.body.text;
-    return userText;
+    userText = req.body;
+    console.log(userText);
+    return res.send(userText);
 })
 
-
-const callApi = async (usertext) => {
-        let akey = process.env.API_KEY
-        let prosUrl = `https://api.meaningcloud.com/sentiment-2.1?key=${akey}`;
-        let progUrl = prosUrl + '&of=json&txt=' + usertext + '.&model=general&lang=en'
-        console.log(progUrl);
-        const response = await fetch (progUrl)
-            try {const data = await response.json(); return data;}
-            catch(error) {console.log("There was an error", error);}
-        }
-    
-function clickFunc(e) {
-       const adjText = usertext.replace(/ /g, "%20");
-       callApi(adjText);
-       console.log(apiKey)
-        }
 
 
