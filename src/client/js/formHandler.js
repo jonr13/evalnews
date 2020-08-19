@@ -1,3 +1,5 @@
+const fetch = require('node-fetch');
+
 function handleSubmit(event) {
     event.preventDefault()
 
@@ -7,8 +9,7 @@ Client.checkForName(formText)
 
 console.log("::: Form Submitted :::");
 
-const postData = async ( url = '', data = '')=>{
-    console.log(data);
+const postData = async ( url = '', data = {}) => {
     const response = await fetch(url, {
     method: 'POST', 
     credentials: 'same-origin',
@@ -16,22 +17,22 @@ const postData = async ( url = '', data = '')=>{
           'Content-Type': 'application/json',
       },
      // Body data type must match "Content-Type" header        
-      body: JSON.stringify(data), 
+    body: JSON.stringify(data),
     });
-
-      try {
+    try {
         const newData = await response.json();
-        console.log(newData);
         return newData;
-      }catch(error) {
+    }
+    catch(error) {
       console.log("error", error);
       }
   }
 
-postData('/api', formText);
-    //.then(function(res) {
-     //   document.getElementById('results').innerHTML = res.message
-    //})
+postData('/api', {txt: formText})
+    .then(function(res) {
+       document.getElementById('results').innerHTML = res.agreement;
+    })
+
 }
 
 export { handleSubmit }

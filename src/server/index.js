@@ -37,13 +37,30 @@ app.listen(8081, function () {
     console.log('Example app listening on port 8081!')
 })
 
-let text 
+// instantiate the API key
+const API_KEY = process.env.API_KEY;
+//require the Fetch API
+const fetch = require('node-fetch');
+
+
+
+const callApi = async (url, classification, res) => {
+    const response = await fetch (url)
+    try {const data = await response.json();
+        classification['agreement'] = data.agreement;
+    }
+    catch(error) {console.log("There was an error", error);}
+    console.log(classification);
+    res.send(classification);
+}
+
+
 
 app.post('/api', function (req, res) {
-    userText = req.body;
-    console.log(userText);
-    return res.send(userText);
-})
-
+    let classification = {};
+    let text = req.body.txt;
+    let url = `https://api.meaningcloud.com/sentiment-2.1?key=${API_KEY}&lang=en&txt=${text}&model=general`;
+    callApi(url, classification, res);
+    });
 
 
