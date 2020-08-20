@@ -11,6 +11,7 @@ const express = require('express')
 const mockAPIResponse = require('./mockAPI.js')
 //Stat up an Instance of App
 const app = express()
+const reg = require("regenerator-runtime");
 
 /* Middleware*/
 //Here we are configuring express to use body-parser as middle-ware. - allows use to parse JSON
@@ -31,11 +32,11 @@ app.get('/', function (req, res) {
     res.sendFile('dist/index.html');
 
 })
-
-// designates what port the app will listen to for incoming requests
-app.listen(8081, function () {
-    console.log('Example app listening on port 8081!')
-})
+const port = 8081
+const printPort = (port) => {
+    console.log(`App is listening on port ${port}`)}
+    // designates what port the app will listen to for incoming requests
+app.listen(port, printPort(port));
 
 // instantiate the API key
 const API_KEY = process.env.API_KEY;
@@ -43,7 +44,7 @@ const API_KEY = process.env.API_KEY;
 const fetch = require('node-fetch');
 
 
-
+function processApi() {
 const callApi = async (url, classification, res) => {
     const response = await fetch (url)
     try {const data = await response.json();
@@ -54,13 +55,15 @@ const callApi = async (url, classification, res) => {
     res.send(classification);
 }
 
-
-
 app.post('/api', function (req, res) {
     let classification = {};
     let text = req.body.txt;
     let url = `https://api.meaningcloud.com/sentiment-2.1?key=${API_KEY}&lang=en&txt=${text}&model=general`;
     callApi(url, classification, res);
     });
+}
 
+processApi();
 
+//export { printPort }
+module.exports = printPort
