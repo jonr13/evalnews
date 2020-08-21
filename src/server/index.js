@@ -49,6 +49,9 @@ const callApi = async (url, classification, res) => {
     const response = await fetch (url)
     try {const data = await response.json();
         classification['agreement'] = data.agreement;
+        classification['polarity'] = data.polarity;
+        classification['subjectivity'] = data.subjectivity;
+        classification['confidence'] = data.confidence;
     }
     catch(error) {console.log("There was an error", error);}
     console.log(classification);
@@ -65,5 +68,4 @@ app.post('/api', function (req, res) {
 
 processApi();
 
-//export { printPort }
-module.exports = printPort
+export { printPort }

@@ -6,7 +6,6 @@ function handleSubmit(event) {
     // check what text was put into the form field
 
 let formText = document.getElementById('name').value
-Client.checkForName(formText)
 
 console.log("::: Form Submitted :::");
 
@@ -31,10 +30,10 @@ const postData = async ( url = '', data = {}) => {
 
 postData('/api', {txt: formText})
     .then(function(res) {
-        if (res.agreement === undefined) {
-            document.getElementById('results').innerHTML = 'Please submit text!'
+        if (res.agreement === undefined && res.confidence === undefined && res.subjectivity === undefined && res.polarity === undefined) {
+            alert("Please input text!")
         } else {
-            document.getElementById('results').innerHTML = res.agreement;
+            document.getElementById('results').innerHTML = `Agreement: ${res.agreement}    Polarity: ${res.polarity}    Confidence: ${res.conidence}    Subjectivity: ${res.subjectivity}`;
         }
     })
 
